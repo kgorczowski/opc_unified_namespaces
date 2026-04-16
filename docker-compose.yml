@@ -1,0 +1,142 @@
+version: "3.9"
+
+services:
+
+  # ── Infrastructure ────────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: opc-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: opc_gateway
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  valkey:
+    image: valkey/valkey:7-alpine
+    container_name: opc-valkey
+    restart: unless-stopped
+    command: >
+      valkey-server
+        --save 60 1
+        --loglevel warning
+        --maxmemory 256mb
+        --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkeydata:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── OPC UA Mock Server ───────────────────────────────────────────────────
+
+  opc-server-mock:
+    build:
+      context: .
+      dockerfile: OPCGateway.OPCServerMock/Dockerfile
+    container_name: opc-server-mock
+    restart: unless-stopped
+    ports:
+      - "4841:4841"
+      - "4842:4842"
+    healthcheck:
+      test: ["CMD-SHELL", "echo > /dev/tcp/localhost/4841 2>/dev/null && echo ok || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+
+  # ── Application Services ─────────────────────────────────────────────────
+
+  opc-gateway:
+    build:
+      context: .
+      dockerfile: OPCGateway/Dockerfile
+    container_name: opc-gateway
+    restart: unless-stopped
+    ports:
+      - "5000:80"       # REST API + Swagger
+      - "5001:443"      # HTTPS
+      - "5002:5002"     # gRPC (HTTP/2, plaintext for internal)
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: "http://+:80;https://+:443;http://+:5002"
+      ConnectionStrings__DefaultConnection: >-
+        Host=postgres;Port=5432;Database=opc_gateway;
+        Username=postgres;Password=admin123;
+        Pooling=true;MinPoolSize=2;MaxPoolSize=20
+      ConnectionStrings__Valkey: "valkey:6379"
+      ApiKey: "e0c2747d-40e9-4b5d-980a-6b06a4c4d24d"
+      Grpc__Port: "5002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      opc-server-mock:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  opc-worker:
+    build:
+      context: .
+      dockerfile: OPCGateway.Worker/Dockerfile
+    container_name: opc-worker
+    restart: unless-stopped
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: >-
+        Host=postgres;Port=5432;Database=opc_gateway;
+        Username=postgres;Password=admin123;
+        Pooling=true;MinPoolSize=1;MaxPoolSize=5
+      ConnectionStrings__Valkey: "valkey:6379"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      opc-gateway:
+        condition: service_healthy
+    deploy:
+      replicas: 1          # increase to 2 for HA – consumer groups handle deduplication
+
+  # ── WPF Admin Client host (ClickOnce publish target) ─────────────────────
+
+  admin-client-host:
+    image: nginx:1.27-alpine
+    container_name: opc-admin-host
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./publish/admin-client:/usr/share/nginx/html:ro
+      - ./deploy/nginx-admin.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - opc-gateway
+
+volumes:
+  pgdata:
+  valkeydata:
+
+networks:
+  default:
+    name: opc-net

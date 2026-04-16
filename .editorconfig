@@ -1,0 +1,48 @@
+[*.cs]
+#Treating all StyleCop warnings as build errors
+dotnet_analyzer_diagnostic.category-Style.Warning.severity = error
+
+#SA0001XmlCommentAnalysisDisabled
+dotnet_diagnostic.SA0001.severity = none
+#usings in namespaces disabled
+dotnet_diagnostic.SA1200.severity = none
+#DeclarationKeywordsMustFollowOrder (was in conflict with VS autoformatting -> wanted required "public instead" of "public required")
+dotnet_diagnostic.SA1206.severity = none
+#ParameterNamesMustBeginWithLowerCaseLetter (Fails on primary constructors)
+dotnet_diagnostic.SA1313.severity = none
+#Enforcing file headers
+dotnet_diagnostic.SA1633.severity = none
+
+#OpeningSquareBracketsMustBeSpacedCorrectly
+dotnet_diagnostic.SA1010.severity = none
+#PrefixLocalCallsWithThis
+dotnet_diagnostic.SA1101.severity = none
+#SA1309FieldNamesMustNotBeginWithUnderscore
+dotnet_diagnostic.SA1309.severity = none
+#FieldNamesMustNotContainUnderscore (underscore are used in tests)
+dotnet_diagnostic.SA1310.severity = none
+
+#Stylecop error with handling records in new .Net - might be fixed in future release
+dotnet_diagnostic.SA1649.severity = none
+
+#SA1009	A closing parenthesis within a C# statement is not spaced correctly.
+dotnet_diagnostic.SA1009.severity = none
+#Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+#SA1601PartialElementsMustBeDocumented
+dotnet_diagnostic.SA1601.severity = none
+#EnumerationItemsMustBeDocumented
+dotnet_diagnostic.SA1602.severity = none
+#SA1611ElementParametersMustBeDocumented
+dotnet_diagnostic.SA1611.severity = none
+#ParameterSpansMultipleLines
+dotnet_diagnostic.SA1118.severity = none
+
+csharp_style_namespace_declarations = file_scoped:error
+
+
+
+
+#StyleCop error issue with ConcurrentDictionary - might be fixed in future release
+[SessionsManager.cs]
+dotnet_diagnostic.SA1201.severity = none
