@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPC Gateway Monitoring</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>OPC Gateway Monitoring</h1>
+    <div>
+        <label for="connectionId">Connection ID:</label>
+        <input type="text" id="connectionId" placeholder="Enter Connection ID">
+    </div>
+    <div>
+        <label for="opcNamespace">OPC Namespace:</label>
+        <input type="number" id="opcNamespace" placeholder="Enter OPC Namespace">
+    </div>
+    <div>
+        <label for="nodeIds">Node IDs (comma-separated):</label>
+        <input type="text" id="nodeIds" placeholder="Enter Node IDs">
+    </div>
+    <div>
+        <label for="publishingInterval">Publishing Interval (ms):</label>
+        <input type="number" id="publishingInterval" placeholder="Enter Publishing Interval">
+    </div>
+    <button id="startMonitoring">Start Monitoring</button>
+    <button id="stopMonitoring">Stop Monitoring</button>
+    <div id="messages"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

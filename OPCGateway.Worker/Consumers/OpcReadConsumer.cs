@@ -76,7 +76,7 @@ public sealed class OpcReadConsumer(
         try
         {
             var payload = entry[ValkeyKeys.PayloadField];
-            req = JsonSerializer.Deserialize<ReadRequest>(payload!);
+            req = JsonSerializer.Deserialize<ReadRequest>((string)payload!);
             if (req is null) throw new InvalidOperationException("Null deserialized request.");
 
             logger.LogDebug(
@@ -160,7 +160,7 @@ public sealed class OpcReadConsumer(
                 ValkeyKeys.ReadRequestStream,
                 ValkeyKeys.WorkerConsumerGroup,
                 ConsumerName,
-                ClaimIdleThreshold,
+                (long)ClaimIdleThreshold.TotalMilliseconds,
                 "0-0",
                 count: 10);
         }

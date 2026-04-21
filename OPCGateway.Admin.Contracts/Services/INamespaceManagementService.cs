@@ -5,6 +5,7 @@ namespace OPCGateway.Admin.Contracts.Services;
 using System.ServiceModel;
 using System.Runtime.CompilerServices;
 using OPCGateway.Admin.Contracts.Models;
+using ProtoBuf.Grpc;
 
 /// <summary>
 /// Provides OPC UA address space browsing and namespace inspection.

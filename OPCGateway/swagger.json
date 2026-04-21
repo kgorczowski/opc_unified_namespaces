@@ -1,0 +1,560 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OPC Gateway API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Connection/connect/anonymous": {
+      "post": {
+        "tags": [
+          "Connection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnonymousConnectionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnonymousConnectionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnonymousConnectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Connection/connect/username": {
+      "post": {
+        "tags": [
+          "Connection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserNameConnectionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserNameConnectionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserNameConnectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Connection/connect/certificate": {
+      "post": {
+        "tags": [
+          "Connection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateConnectionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateConnectionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateConnectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Connection/reconnect/{connectionId}": {
+      "post": {
+        "tags": [
+          "Connection"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Connection/status/{connectionId}": {
+      "get": {
+        "tags": [
+          "Connection"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Connection/disconnect/{connectionId}": {
+      "post": {
+        "tags": [
+          "Connection"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/api/Data/read/{connectionId}/{opcNamespace}/{nodeId}": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "opcNamespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Data/readMultiple/{connectionId}/{opcNamespace}": {
+      "post": {
+        "tags": [
+          "Data"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "opcNamespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Data/write/{connectionId}/{opcNamespace}": {
+      "post": {
+        "tags": [
+          "Data"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "opcNamespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteDataRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteDataRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteDataRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Data/writeMultiple/{connectionId}/{opcNamespace}": {
+      "post": {
+        "tags": [
+          "Data"
+        ],
+        "parameters": [
+          {
+            "name": "connectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "opcNamespace",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteMultipleDataRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteMultipleDataRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteMultipleDataRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnonymousConnectionRequest": {
+        "required": [
+          "endpointUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "endpointUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityMode": {
+            "$ref": "#/components/schemas/SecurityMode"
+          },
+          "securityPolicy": {
+            "$ref": "#/components/schemas/SecurityPolicy"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CertificateConnectionRequest": {
+        "required": [
+          "certificatePath",
+          "endpointUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "endpointUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityMode": {
+            "$ref": "#/components/schemas/SecurityMode"
+          },
+          "securityPolicy": {
+            "$ref": "#/components/schemas/SecurityPolicy"
+          },
+          "certificatePath": {
+            "type": "string",
+            "nullable": true
+          },
+          "certificatePassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SecurityMode": {
+        "enum": [
+          "Auto",
+          "None",
+          "Sign",
+          "SignAndEncrypt"
+        ],
+        "type": "string"
+      },
+      "SecurityPolicy": {
+        "enum": [
+          "Auto",
+          "None",
+          "Basic128Rsa15",
+          "Basic256",
+          "Basic256Sha256",
+          "Aes128_Sha256_RsaOaep",
+          "Aes256_Sha256_RsaPss"
+        ],
+        "type": "string"
+      },
+      "UserNameConnectionRequest": {
+        "required": [
+          "endpointUrl",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "endpointUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityMode": {
+            "$ref": "#/components/schemas/SecurityMode"
+          },
+          "securityPolicy": {
+            "$ref": "#/components/schemas/SecurityPolicy"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WriteDataRequest": {
+        "required": [
+          "nodeId",
+          "value",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "nullable": true
+          },
+          "valueType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WriteDataValue": {
+        "required": [
+          "value",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "valueType": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WriteMultipleDataRequest": {
+        "required": [
+          "nodeValues"
+        ],
+        "type": "object",
+        "properties": {
+          "nodeValues": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WriteDataValue"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "API Key needed to access the endpoints. X-API-Key: {API Key}",
+        "name": "X-API-Key",
+        "in": "header"
+      }
+    }
+  }
+}

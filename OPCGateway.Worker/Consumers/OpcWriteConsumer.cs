@@ -78,7 +78,7 @@ public sealed class OpcWriteConsumer(
         try
         {
             var payload = entry[ValkeyKeys.PayloadField];
-            cmd = JsonSerializer.Deserialize<WriteCommand>(payload!);
+            cmd = JsonSerializer.Deserialize<WriteCommand>((string)payload!);
             if (cmd is null) throw new InvalidOperationException("Null deserialized command.");
 
             logger.LogDebug(
@@ -115,15 +115,15 @@ public sealed class OpcWriteConsumer(
                 ValkeyKeys.WriteCommandStream,
                 ValkeyKeys.WorkerConsumerGroup,
                 ConsumerName,
-                ClaimIdleThreshold,
+                (long)ClaimIdleThreshold.TotalMilliseconds,
                 "0-0",
                 count: 10);
 
-            if (claimed.Entries.Length > 0)
+            if (claimed.ClaimedEntries.Length > 0)
             {
                 logger.LogWarning(
                     "Reclaimed {Count} abandoned write command(s) from idle consumers",
-                    claimed.Entries.Length);
+                    claimed.ClaimedEntries.Length);
             }
         }
         catch (Exception ex)

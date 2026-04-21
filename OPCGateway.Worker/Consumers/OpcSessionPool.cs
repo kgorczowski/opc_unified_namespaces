@@ -155,8 +155,8 @@ internal sealed class WorkerOpcSession(Session session, ILogger logger)
 
         if (_reconnectHandler is null)
         {
-            _reconnectHandler = new SessionReconnectHandler(reconnectAbortIncrement: true);
-            _reconnectHandler.BeginReconnect(s, exceptionCallback: null, 5_000);
+            _reconnectHandler = new SessionReconnectHandler(reconnectAbort: true);
+            _reconnectHandler.BeginReconnect(s, 5_000, null);
         }
     }
 

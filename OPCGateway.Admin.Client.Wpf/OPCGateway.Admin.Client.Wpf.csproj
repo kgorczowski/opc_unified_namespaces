@@ -9,7 +9,7 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>OPCGateway.Admin.Client.Wpf</RootNamespace>
     <AssemblyName>OPCGateway.Admin</AssemblyName>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+
 
     <!-- ClickOnce deployment settings -->
     <PublishUrl>publish\</PublishUrl>

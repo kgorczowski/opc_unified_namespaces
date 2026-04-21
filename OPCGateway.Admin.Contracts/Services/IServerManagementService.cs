@@ -4,6 +4,7 @@ namespace OPCGateway.Admin.Contracts.Services;
 
 using System.ServiceModel;
 using OPCGateway.Admin.Contracts.Models;
+using ProtoBuf.Grpc;
 
 /// <summary>
 /// Manages OPC UA server connections and configuration.

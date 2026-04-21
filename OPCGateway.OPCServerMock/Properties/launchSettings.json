@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "OPCGateway.OPCServerMock": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+
+      "useSSL": false,
+      "DockerfileRunArguments": "-p 4841:4841 -p 4842:4842"
+    }
+  }
+}

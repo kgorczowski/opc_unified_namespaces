@@ -20,7 +20,7 @@ public static class RepositoryExtensions
         var cs = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is required.");
 
-        services.AddNpgsqlDataSource(cs);
+        services.AddSingleton(NpgsqlDataSource.Create(cs));
 
         services.AddScoped<IServerRepository, PostgresServerRepository>();
         services.AddScoped<INodeRepository, PostgresNodeRepository>();

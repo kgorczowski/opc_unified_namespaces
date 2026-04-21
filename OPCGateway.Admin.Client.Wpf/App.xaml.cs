@@ -2,6 +2,7 @@
 
 namespace OPCGateway.Admin.Client.Wpf;
 
+using System.Net.Http;
 using System.Windows;
 using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;

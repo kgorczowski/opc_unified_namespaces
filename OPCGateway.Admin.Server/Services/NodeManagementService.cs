@@ -4,6 +4,8 @@ namespace OPCGateway.Admin.Server.Services;
 
 using OPCGateway.Admin.Contracts.Models;
 using OPCGateway.Admin.Contracts.Services;
+using OPCGateway.Admin.Server.Abstractions;
+using OPCGateway.Admin.Server.Entities;
 using ProtoBuf.Grpc;
 
 /// <summary>
